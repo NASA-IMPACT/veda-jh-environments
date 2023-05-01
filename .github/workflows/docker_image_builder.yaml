@@ -43,21 +43,21 @@ jobs:
           # 3) query ECR to see if we have a repository with the folder name already (name of 'docker-images' > 'folders'), if not create
           # 4) query ECS repository to see if there exists an image in that repo with this ${{ steps.commitsha_head.outputs.GIT_REV_HEAD }} tag, if not create
 
-#          # base pangeo-notebook image
-#          pushd ./docker-images/pangeo-notebook
-#          VERSION=$(cat Dockerfile | grep VERSION | cut -d'=' -f 2)
-#          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-#          docker build -t $ECR_REGISTRY_BASE:$VERSION .
-#          docker push $ECR_REGISTRY_BASE:$VERSION
-#          popd
+          # base pangeo-notebook image
+          pushd ./docker-images/pangeo-notebook
+          VERSION=$(cat Dockerfile | grep VERSION | cut -d'=' -f 2)
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+          docker build -t $ECR_REGISTRY_BASE:$VERSION .
+          docker push $ECR_REGISTRY_BASE:$VERSION
+          popd
 
-#          # custom pangeo-notebook image
-#          pushd ./docker-images/eis-feds-nrt
-#          VERSION=$(cat Dockerfile | grep VERSION | cut -d'=' -f 2)
-#          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-#          docker build -t $ECR_REGISTRY_CUSTOM:$VERSION .
-#          docker push $ECR_REGISTRY_CUSTOM:$VERSION
-#          popd
+          # custom pangeo-notebook image
+          pushd ./docker-images/eis-feds-nrt
+          VERSION=$(cat Dockerfile | grep VERSION | cut -d'=' -f 2)
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+          docker build -t $ECR_REGISTRY_CUSTOM:$VERSION .
+          docker push $ECR_REGISTRY_CUSTOM:$VERSION
+          popd
 
       - name: download jupyterhub/jupyterhub helm version
         id: download_helm
