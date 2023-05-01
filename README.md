@@ -11,7 +11,7 @@ TODO: diagram
 2. For a quick example navigate to `/docker-images/custom-examples/owslib-rio-tiler`. Note the two files
 that are present in this folder. Let's talk about each one.
 
-```bash
+```python
 $ ls -l
 total 16
 -rw-r--r--  1 ranchodeluxe  staff   86 May  1 04:23 Dockerfile
@@ -20,7 +20,7 @@ total 16
 
 3. Each custom image folder should at least container one `Dockerfile` similar to one below:
 
-```bash
+```python
 # NOTE: you need to understand which base image you'll want installed
 # most folks will just need the default to be the 'pangeo-notebook' base image
 # TODO: decide on which base images we want to support (look to Planetary Computer and SageMaker for advice here)
@@ -32,7 +32,7 @@ ENV VERSION=0.0.1
 5. Next, notice the `envrionment.yml` file next to the `Dockerfile`. This config let's us specify additional packages that
 the base image might not have:
 
-```bash
+```python
 # TODO: find a link to packages that are default installed in our base images 
 $ cat environment.yml
 name: owslib-rio-tiler
@@ -47,14 +47,14 @@ dependencies:
 
 6. To create your own custom environment, create a new branch off `main`:
 
-```bash
+```python
 $ git checkout -b new-eis-science_env
 ```
 
 7. Then either copy an example or manually create a folder in `/docker-images/` directory. Below we walk through the
 steps of copying an existing example:
 
-```bash
+```python
 # copy an example to the main '/docker-images/' directory and give it a unique name
 $ cp -R /docker-images/custom-examples/owslib-rio-tiler  /docker-images/eis-science-env
 
@@ -97,7 +97,7 @@ packages here are "pinned" (read more about [pinning here](https://docs.conda.io
 While the lines below functionally act as a pin, it's not a true `conda` pin b/c the dependencies of our
 target packages should be pinned also:
 
-```bash
+```python
   - pip:
     - rio-tiler==4.1.10
     - OWSLib==0.28.1
@@ -105,7 +105,7 @@ target packages should be pinned also:
 
 2. if we run `conda env export` we generate the actual pinned yaml:
 
-```bash
+```python
 name: /owslib-rio-tiler
 channels:
   - conda-forge
