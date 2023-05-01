@@ -8,9 +8,7 @@ TODO: diagram
 
 1. Each folder in this directory contains configuration files for a custom image
 
-2. The name of each folder will become the name of the image in JH profiles page that you select
-
-3. For a quick example navigate to `/docker-images/custom-examples/owslib-rio-tiler`. Note the two files
+2. For a quick example navigate to `/docker-images/custom-examples/owslib-rio-tiler`. Note the two files
 that are present in this folder. Let's talk about each one.
 
 ```bash
@@ -20,7 +18,7 @@ total 16
 -rw-r--r--  1 ranchodeluxe  staff  130 May  1 04:47 environment.yml
 ```
 
-4. Each custom image folder should at least container one `Dockerfile` similar to one below:
+3. Each custom image folder should at least container one `Dockerfile` similar to one below:
 
 ```bash
 # NOTE: you need to understand which base image you'll want installed
@@ -91,10 +89,10 @@ or other formats. Read more about this topic in [Specifying Package Versions](#s
 ### Specifying Package Versions
 
 Most folks will want to use [pinned environment.yaml files](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html#preventing-packages-from-updating-pinning).
-But below we show you how to specify your package details using [conda-lock](https://github.com/conda/conda-lock) or [conda-pack](https://conda.github.io/conda-pack/) files also
+There are other formats to specify your packages with. Below we show you how to specify your package details using [conda-lock](https://github.com/conda/conda-lock) or [conda-pack](https://conda.github.io/conda-pack/) files also
 
 
-1. TOOD: talk more in depth about "pinned" yaml and requirements. Most people will be comfortable with creating `environment.yml` files. It's a best practice that all your listed 
+1. TODO: talk more in depth about "pinned" yaml and requirements. Most people will be comfortable with creating `environment.yml` files. It's a best practice that all your listed 
 packages here are "pinned" (read more about [pinning here](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html#preventing-packages-from-updating-pinning)). 
 While the lines below functionally act as a pin, it's not a true `conda` pin b/c the dependencies of our
 target packages should be pinned also:
