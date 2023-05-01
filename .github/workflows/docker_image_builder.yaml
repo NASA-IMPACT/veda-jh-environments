@@ -51,13 +51,13 @@ jobs:
 #          docker push $ECR_REGISTRY_BASE:$VERSION
 #          popd
 
-          # custom pangeo-notebook image
-          pushd ./docker-images/eis-feds-nrt
-          VERSION=$(cat Dockerfile | grep VERSION | cut -d'=' -f 2)
-          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-          docker build -t $ECR_REGISTRY_CUSTOM:$VERSION .
-          docker push $ECR_REGISTRY_CUSTOM:$VERSION
-          popd
+#          # custom pangeo-notebook image
+#          pushd ./docker-images/eis-feds-nrt
+#          VERSION=$(cat Dockerfile | grep VERSION | cut -d'=' -f 2)
+#          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+#          docker build -t $ECR_REGISTRY_CUSTOM:$VERSION .
+#          docker push $ECR_REGISTRY_CUSTOM:$VERSION
+#          popd
 
       - name: download jupyterhub/jupyterhub helm version
         id: download_helm
