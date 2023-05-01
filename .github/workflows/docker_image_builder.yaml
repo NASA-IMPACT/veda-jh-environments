@@ -95,14 +95,15 @@ jobs:
           INDEX=0
           printf "  profileList:\n" >> $PROFILE_VALUES
           while read DOCKERFILE_PATH; do
-            IMAGE_LOOKUP=$(cat $DOCKERFILE_PATH | grep FROM | cut -d' ' -f 2)
+            # TODO: this has to be dynamically done
+            IMAGE_LOOKUP='public.ecr.aws/i8x6m1u9/tf-eis-feds-nrt-west1-sandbox'
             VERSION=$(cat $DOCKERFILE_PATH | grep VERSION | cut -d'=' -f 2)
             NAME_AND_DESC=$(echo $DOCKERFILE_PATH | cut -d'/' -f 2)
             # TODO: what's the user experience for setting 'name', 'description', 'default'?
             printf "    - display-name: $NAME_AND_DESC\n"  >> $PROFILE_VALUES
             printf "      description: $NAME_AND_DESC\n"  >> $PROFILE_VALUES
             printf "      kubespawner_override:\n"  >> $PROFILE_VALUES
-            printf "        image: $IMAGE_LOOKUP\n"  >> $PROFILE_VALUES
+            printf "        image: $IMAGE_LOOKUP:$VERSION\n"  >> $PROFILE_VALUES
             if [ $INDEX -eq 0 ]; then
             printf "      default: true\n"  >> $PROFILE_VALUES
             fi
