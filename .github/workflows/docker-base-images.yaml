@@ -53,7 +53,10 @@ jobs:
             # check if image with correct tags does not exist
             DOCKERFILE_DIGEST=$(sha256sum "$DOCKERFILE_PATH" | cut -d' ' -f1)
 
-            image_exists=$(aws ecr-public describe-images --repository-name "$NAME_AND_DESC" --image-ids=imageTag='$VERSION',imageDigest='sha256:$DOCKERFILE_DIGEST' | jq '.imageDetails | map(.repositoryName)' | "$NAME_AND_DESC" | xargs)
+            echo "###################################"
+            echo "mydigest: $DOCKERFILE_DIGEST"
+            echo "###################################"
+            image_exists=$(aws ecr-public describe-images --repository-name "$NAME_AND_DESC" --image-ids=imageTag='$VERSION' | jq '.imageDetails | map(.repositoryName)' | "$NAME_AND_DESC" | xargs)
             echo "###################################"
             echo "FOUND IMAGE: $image_exists"
             echo "###################################"
@@ -66,10 +69,10 @@ jobs:
               aws ecr-public get-login-password | docker login --username AWS --password-stdin public.ecr.aws
 
               # build image
-              docker build -t $existing_repo_uri:$VERSION -t $existing_repo_uri:latest -t $existing_repo_uri:$DOCKERFILE_DIGEST .
+              docker build -t $existing_repo_uri:$VERSION .
 
               # push image to ECR
-              docker push $existing_repo_uri:$VERSION --all-tags
+              docker push $existing_repo_uri:$VERSION
               popd
             fi
           done < <(echo "$DOCKERFILES")
