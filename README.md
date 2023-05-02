@@ -2,6 +2,8 @@
 
 TODO: diagram of how it works
 
+---
+
 ### Adding Custom Images to JupyterHub (JH) Profile
 
 0. Navigate to `/docker-images/examples/`
@@ -21,11 +23,11 @@ total 16
 3. Each custom image folder should at least container one `Dockerfile` similar to one below:
 
 ```python
-# NOTE: you need to understand which base image you'll want installed
-# most folks will just need the default to be the 'pangeo-notebook' base image
+# NOTE: you'll need to pick a base image, most folks will just need the default to be the 'pangeo-notebook' base image
 # TODO: decide on which base images we want to support (look to Planetary Computer and SageMaker for advice here)
-FROM public.ecr.aws/i8x6m1u9/tf-pangeo-notebook-west1-sandbox:0.0.1
-# NOTE: it might also be helpful (or not) for you to edit the version number to track changes to your environment
+FROM public.ecr.aws/i8x6m1u9/pangeo-notebook:0.0.1
+
+# NOTE: if a version of image already exists in the repository it won't be pushed, so bump the version if you've changed your `environment.yml`
 ENV VERSION=0.0.1
 ```
 
@@ -63,9 +65,9 @@ $ cd /docker-images/custom/eis-science-env
 
 # open your 'Dockerfile' and choose a base image that makes sense
 # TODO: decide on which base images we want to support (look to Planetary Computer and SageMaker for advice here)
-FROM public.ecr.aws/i8x6m1u9/tf-pangeo-notebook-west1-sandbox:0.0.1
+FROM public.ecr.aws/i8x6m1u9/pangeo-notebook:0.0.1
 
-# if needed, consider bumping your 'VERSION` in the 'Dockerfile'
+# if a version of image already exists in the repository it won't be pushed, so bump the version if you've changed your `environment.yml`
 ENV VERSION=0.0.1
 
 # next, change your 'environment.yaml' to fit your packaging needs if you don't see the packages you need in the base image

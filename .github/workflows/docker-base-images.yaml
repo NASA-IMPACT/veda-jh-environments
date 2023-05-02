@@ -12,12 +12,6 @@ jobs:
 
       - uses: sergeysova/jq-action@v2
 
-      - name: set git rev-parse head
-        id: commitsha_head
-        run: |
-          TEMP=$(git rev-parse HEAD)
-          echo "GIT_REV_HEAD=$TEMP" >> $GITHUB_OUTPUT
-
       - name: configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -27,7 +21,6 @@ jobs:
 
       - name: docker build, tag, and push custom images
         run: |
-          #####################
           # get a list of all base Dockerfiles
           DOCKERFILES=$(find ./docker-images/base/* -name "Dockerfile")
 
@@ -41,7 +34,7 @@ jobs:
             # check if repo does not exist
             existing_repo_uri=$(aws ecr-public describe-repositories | jq '.repositories | map(.repositoryUri)' | grep "$NAME_AND_DESC" | xargs)
             echo "###################################"
-            echo "FOUND REPO: $existing_repo_uri"
+            echo "FOUND EXISTING REPO: $existing_repo_uri"
             echo "###################################"
             if [[ -z "$existing_repo_uri" ]]; then
               aws ecr-public create-repository \
@@ -52,10 +45,9 @@ jobs:
 
             # check if image with correct tags does not exist
             DOCKERFILE_DIGEST=$(sha256sum "$DOCKERFILE_PATH" | cut -d' ' -f1)
-
             image_exists=$(aws ecr-public describe-images --repository-name "$NAME_AND_DESC" --image-ids=imageTag="$VERSION" | jq '.imageDetails | map(.repositoryName)' | grep "$NAME_AND_DESC" | xargs)
             echo "###################################"
-            echo "FOUND IMAGE: $image_exists"
+            echo "FOUND EXISTING IMAGE WITH TAG: $image_exists > $VERSION"
             echo "###################################"
             if [ -z "$image_exists" ]; then
               echo "###################################"
