@@ -161,7 +161,7 @@ jobs:
           rm -rf ./jupyterhub
 
       - name: validate yaml manifest file
-        run: yamllint ../gitops-deploy/manifests.yaml
+        run: yamllint ./gitops-deploy/manifests.yaml
 
       - name: commit ./gitops-deploy changes back
         uses: EndBug/add-and-commit@v7
