@@ -64,9 +64,9 @@ jobs:
             aws ecr-public get-login-password | docker login --username AWS --password-stdin public.ecr.aws
 
             # build image
-            docker build -t $existing_repo_arn:$VERSION -t $existing_repo_arn:latest -t $existing_repo_arn:$DOCKERFILE_DIGEST .
+            docker build -t $existing_repo_uri:$VERSION -t $existing_repo_uri:latest -t $existing_repo_uri:$DOCKERFILE_DIGEST .
 
             # push image to ECR
-            docker push $existing_repo_arn:$VERSION
+            docker push $existing_repo_uri:$VERSION
             popd
           done < <(echo "$DOCKERFILES")
