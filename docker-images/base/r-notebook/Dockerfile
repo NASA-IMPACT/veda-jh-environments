@@ -1,4 +1,4 @@
-FROM pangeo/pangeo-notebook:latest
+FROM mcr.microsoft.com/planetary-computer/r:latest
 ENV VERSION=0.0.1
 
 # NOTE: reasoning to use ONBUILD below from JH: https://github.com/pangeo-data/pangeo-docker-images/blob/master/base-image/Dockerfile#L83-L96
@@ -16,6 +16,3 @@ ONBUILD RUN echo "Checking for 'conda-lock.yml' 'conda-linux-64.lock' or 'enviro
         && mamba clean -yaf \
         && find ${CONDA_DIR} -follow -type f -name '*.a' -delete \
         && find ${CONDA_DIR} -follow -type f -name '*.js.map' -delete;
-
-
-
