@@ -1,4 +1,4 @@
-name: docker-image-builder
+name: docker-custom-images
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-docker-image:
+  build-custom-images:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -30,29 +30,17 @@ jobs:
 
       - name: docker build, tag, and push custom images
         env:
-          ECR_REGISTRY_BASE: public.ecr.aws/i8x6m1u9/tf-pangeo-notebook-west1-sandbox
           ECR_REGISTRY_CUSTOM: public.ecr.aws/i8x6m1u9/tf-eis-feds-nrt-west1-sandbox
         run: |
           #####################
-          # TODO: A) investigate using the kaniko github action here so it can manage state and not us
-          # TODO: B) below is an example of what we want to do but we actually have to think about reop state more
-          # future needs include:
-          # 0) create a loop of images to iterate on, exclude pangeo-notebook
-          # 1) get VERSION
-          # 2) build images and tag with VERSION (also figure out how to add tags for sha256sum, GIT_REV_HEAD)
-          # 3) query ECR to see if we have a repository with the folder name already (name of 'docker-images' > 'folders'), if not create
-          # 4) query ECS repository to see if there exists an image in that repo with this ${{ steps.commitsha_head.outputs.GIT_REV_HEAD }} tag, if not create
-
-          # base pangeo-notebook image
-          pushd ./docker-images/pangeo-notebook
-          VERSION=$(cat Dockerfile | grep VERSION | cut -d'=' -f 2)
-          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
-          docker build -t $ECR_REGISTRY_BASE:$VERSION .
-          docker push $ECR_REGISTRY_BASE:$VERSION
-          popd
-
+          # TODO: for this to be viable the deploy user needs to have correct permission via TF to do the following via awscli:
+          # 0. create_repository
+          # 1. describe_repositories
+          # 2. describe_images, describe_images_tags
+          # 3. set_repository_policies, put_lifecycle_policies
           # custom pangeo-notebook image
-          pushd ./docker-images/eis-feds-nrt
+
+          pushd ./docker-images/custom/eis-feds-nrt
           VERSION=$(cat Dockerfile | grep VERSION | cut -d'=' -f 2)
           aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
           docker build -t $ECR_REGISTRY_CUSTOM:$VERSION .
@@ -76,18 +64,20 @@ jobs:
           #####################
           # set up the downstream steps for helm
           rm -rf ./jupyterhub/dockerfile_inputs
-          cp -r ./docker-images ./jupyterhub/dockerfile_inputs
+          cp -r ./docker-images/custom ./jupyterhub/dockerfile_inputs
           TEMP=$(ls -lah ./jupyterhub/dockerfile_inputs)
           echo $TEMP
 #
       - name: find all dockerfiles && helm template manifest for daemon continuous-imagepuller
         id: valuesfile
+        env:
+          ECR_REGISTRY_CUSTOM: public.ecr.aws/i8x6m1u9/tf-eis-feds-nrt-west1-sandbox
         run: |
           #####################
           # get a list of all dockerfiles but the paths must be relative to the helm chart
           # and exclude the base images we don't want to use
           pushd ./jupyterhub
-          DOCKERFILES=$(find dockerfile_inputs/* -name "Dockerfile" ! -path '*/pangeo-notebook/*' ! -path '*/custom-examples/*' -prune)
+          DOCKERFILES=$(find dockerfile_inputs/* -name "Dockerfile" ! -path '*/base/*' ! -path '*/examples/*' -prune)
 
           #####################
           # build a small $PROFILE_VALUES file with our custom images we want to use
@@ -95,15 +85,12 @@ jobs:
           INDEX=0
           printf "  profileList:\n" >> $PROFILE_VALUES
           while read DOCKERFILE_PATH; do
-            # TODO: this has to be dynamically done
-            IMAGE_LOOKUP='public.ecr.aws/i8x6m1u9/tf-eis-feds-nrt-west1-sandbox'
             VERSION=$(cat $DOCKERFILE_PATH | grep VERSION | cut -d'=' -f 2)
             NAME_AND_DESC=$(echo $DOCKERFILE_PATH | cut -d'/' -f 2)
-            # TODO: what's the user experience for setting 'name', 'description', 'default'?
             printf "    - display-name: $NAME_AND_DESC\n"  >> $PROFILE_VALUES
             printf "      description: $NAME_AND_DESC\n"  >> $PROFILE_VALUES
             printf "      kubespawner_override:\n"  >> $PROFILE_VALUES
-            printf "        image: $IMAGE_LOOKUP:$VERSION\n"  >> $PROFILE_VALUES
+            printf "        image: $ECR_REGISTRY_CUSTOM:$VERSION\n"  >> $PROFILE_VALUES
             if [ $INDEX -eq 0 ]; then
             printf "      default: true\n"  >> $PROFILE_VALUES
             fi
@@ -116,23 +103,29 @@ jobs:
           # jupyterhub values.yaml spot through a series of edits
           START_VALUES=values.yaml
           NEW_VALUES=new-values.yaml
+
           # find the existing empty "profileList" number
           LINE_TO_DELETE=$(cat "$START_VALUES" | grep -n profileList | cut -d':' -f1)
 
-          #####################
           # create $NEW_VALUES file with our custom $PROFILE_LIST file values by:
           # 1) finding "/profileList/" in $START_VALUES file and get line number match
           # 2) and insert everything from $PROFILE_VALUES file after that match line
           sed -e '/profileList/r./'"$PROFILE_VALUES"'' $START_VALUES > $NEW_VALUES
+
           # delete the first (and pre-existing) empty 'profileList' line
           sed -i ''"$LINE_TO_DELETE"'d' $NEW_VALUES
+
           # QC check in CI/CD runner
           cat $NEW_VALUES | grep -B 15 -A 10 profileList
 
           ######################
           # helm render only the template we care about deploying which the daemonset
           helm template -s templates/image-puller/daemonset-continuous.yaml . -f new-values.yaml > ../gitops-deploy/manifests.yaml
+
+          # QC check in CI/CD runner
           cat ../gitops-deploy/manifests.yaml
+
+          # don't want github actions bot committing this
           popd
           rm -rf ./jupyterhub
 
