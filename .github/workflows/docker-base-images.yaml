@@ -40,6 +40,9 @@ jobs:
 
             # check if repo does not exist
             existing_repo_arn=$(aws ecr-public describe-repositories | jq '.repositories | map(.repositoryArn)' | grep "$NAME_AND_DESC" | xargs)
+            echo "###################################"
+            echo "$existing_repo_arn"
+            echo "###################################"
             if [ ! -z "$existing_repo_arn" ]; then
               aws ecr-public create-repository \
                 --repository-name pangeo-notebook \
