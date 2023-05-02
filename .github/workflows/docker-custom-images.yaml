@@ -69,7 +69,7 @@ jobs:
               docker push $existing_repo_uri:$VERSION
               popd
             fi
-          done < <(echo "$DOCKERFILES"
+          done < <(echo "$DOCKERFILES")
 
       - name: download jupyterhub/jupyterhub helm version
         id: download_helm
