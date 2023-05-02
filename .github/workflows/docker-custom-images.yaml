@@ -45,7 +45,8 @@ jobs:
               aws ecr-public create-repository \
                 --repository-name "$NAME_AND_DESC" \
                 --catalog-data=description='veda-custom-image',architectures='x86-64',operatingSystems='Linux' \
-                --tags=Key='org',Value='NASA',Key='project',Value='VEDA'
+                --tags=Key='org',Value='NASA' \
+                --tags=Key='project',Value='VEDA'
             fi
 
             # check if image with correct tags does not exist
