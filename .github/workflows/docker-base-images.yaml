@@ -39,11 +39,11 @@ jobs:
             PARENT_DIR=$(echo $DOCKERFILE_PATH | xargs -I{} dirname {})
 
             # check if repo does not exist
-            existing_repo_arn=$(aws ecr-public describe-repositories | jq '.repositories | map(.repositoryArn)' | grep "$NAME_AND_DESC" | xargs)
+            existing_repo_uri=$(aws ecr-public describe-repositories | jq '.repositories | map(.repositoryUri)' | grep "$NAME_AND_DESC" | xargs)
             echo "###################################"
-            echo "$existing_repo_arn"
+            echo "$existing_repo_uri"
             echo "###################################"
-            if [ ! -z "$existing_repo_arn" ]; then
+            if [[ ! -z "$existing_repo_uri" ]]; then
               aws ecr-public create-repository \
                 --repository-name pangeo-notebook \
                 --catalog-data=description='veda-base-image',architectures='x86-64',operatingSystems='Linux' \
