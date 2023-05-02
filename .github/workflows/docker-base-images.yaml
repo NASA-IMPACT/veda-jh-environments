@@ -1,0 +1,43 @@
+name: docker-base-images
+
+on: workflow_dispatch
+
+jobs:
+  build-base-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: set git rev-parse head
+        id: commitsha_head
+        run: |
+          TEMP=$(git rev-parse HEAD)
+          echo "GIT_REV_HEAD=$TEMP" >> $GITHUB_OUTPUT
+
+      - name: configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.DEPLOY_USER_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.DEPLOY_USER_AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-1
+
+      - name: docker build, tag, and push custom images
+        env:
+          ECR_REGISTRY_BASE: public.ecr.aws/i8x6m1u9/tf-pangeo-notebook-west1-sandbox
+        run: |
+          #####################
+          # TODO: for this to be viable the deploy user needs to have correct permission via TF to do the following via awscli:
+          # 0. create_repository
+          # 1. describe_repositories
+          # 2. describe_images, describe_images_tags
+          # 3. set_repository_policies, put_lifecycle_policies
+
+          # base pangeo-notebook image
+          pushd ./docker-images/base/pangeo-notebook
+          VERSION=$(cat Dockerfile | grep VERSION | cut -d'=' -f 2)
+          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+          docker build -t $ECR_REGISTRY_BASE:$VERSION .
+          docker push $ECR_REGISTRY_BASE:$VERSION
+          popd
