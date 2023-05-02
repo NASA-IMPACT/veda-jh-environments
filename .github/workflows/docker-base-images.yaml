@@ -43,7 +43,7 @@ jobs:
             echo "###################################"
             echo "$existing_repo_uri"
             echo "###################################"
-            if [[ ! -z "$existing_repo_uri" ]]; then
+            if [[ -z "$existing_repo_uri" ]]; then
               aws ecr-public create-repository \
                 --repository-name pangeo-notebook \
                 --catalog-data=description='veda-base-image',architectures='x86-64',operatingSystems='Linux' \
