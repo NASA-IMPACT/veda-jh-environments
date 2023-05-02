@@ -60,7 +60,7 @@ spec:
             runAsGroup: 65534
             runAsUser: 65534
         - name: image-pull-singleuser-profilelist-0
-          image: public.ecr.aws/i8x6m1u9/tf-eis-feds-nrt-west1-sandbox:0.0.2
+          image: public.ecr.aws/i8x6m1u9/eis-feds-nrt:0.0.1
           command:
             - /bin/sh
             - -c
