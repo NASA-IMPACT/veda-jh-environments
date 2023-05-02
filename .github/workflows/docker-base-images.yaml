@@ -53,10 +53,7 @@ jobs:
             # check if image with correct tags does not exist
             DOCKERFILE_DIGEST=$(sha256sum "$DOCKERFILE_PATH" | cut -d' ' -f1)
 
-            echo "###################################"
-            echo "mydigest: $DOCKERFILE_DIGEST"
-            echo "###################################"
-            image_exists=$(aws ecr-public describe-images --repository-name "$NAME_AND_DESC" --image-ids=imageTag='$VERSION' | jq '.imageDetails | map(.repositoryName)' | "$NAME_AND_DESC" | xargs)
+            image_exists=$(aws ecr-public describe-images --repository-name "$NAME_AND_DESC" --image-ids=imageTag="$VERSION" | jq '.imageDetails | map(.repositoryName)' | grep "$NAME_AND_DESC" | xargs)
             echo "###################################"
             echo "FOUND IMAGE: $image_exists"
             echo "###################################"
