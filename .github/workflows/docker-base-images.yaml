@@ -32,7 +32,7 @@ jobs:
             PARENT_DIR=$(echo $DOCKERFILE_PATH | xargs -I{} dirname {})
 
             # check if repo does not exist
-            existing_repo_uri=$(aws ecr-public describe-repositories | jq '.repositories | map(.repositoryUri)' | grep "$NAME_AND_DESC" | xargs)
+            existing_repo_uri=$(aws ecr-public describe-repositories | jq '.repositories | map(.repositoryUri)' | grep "$NAME_AND_DESC" | sed 's/,//g' | xargs)
             echo "###################################"
             echo "FOUND EXISTING REPO: $existing_repo_uri"
             echo "###################################"
@@ -42,6 +42,9 @@ jobs:
                 --catalog-data=description='veda-base-image',architectures='x86-64',operatingSystems='Linux' \
                 --tags=Key='org',Value='NASA' \
                 --tags=Key='project',Value='VEDA'
+
+              # now get the URI again so we can use it when we build
+              existing_repo_uri=$(aws ecr-public describe-repositories | jq '.repositories | map(.repositoryUri)' | grep "$NAME_AND_DESC" | sed 's/,//g' | xargs)
             fi
 
             # check if image with correct tags does not exist
