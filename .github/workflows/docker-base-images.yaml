@@ -57,7 +57,7 @@ jobs:
               echo "###################################"
               pushd $PARENT_DIR
 
-              DOCKERFILE_DIGEST=$(sha256sum "$DOCKERFILE_PATH" | cut -d' ' -f1)
+              DOCKERFILE_DIGEST=$(sha256sum ./Dockerfile | cut -d' ' -f1)
               DATE_TAG=$(date +%F)
 
               # login
