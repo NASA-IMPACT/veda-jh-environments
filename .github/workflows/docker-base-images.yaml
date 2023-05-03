@@ -71,7 +71,7 @@ jobs:
                 -t $existing_repo_uri:latest .
 
               # push image to ECR
-              docker push --all-tags $existing_repo_uri:latest
+              docker push --all-tags $existing_repo_uri
               popd
             fi
           done < <(echo "$DOCKERFILES")
