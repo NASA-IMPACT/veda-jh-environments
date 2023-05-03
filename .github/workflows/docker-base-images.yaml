@@ -13,7 +13,7 @@ jobs:
       - uses: sergeysova/jq-action@v2
 
       - name: configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v3
         with:
           aws-access-key-id: ${{ secrets.DEPLOY_USER_AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.DEPLOY_USER_AWS_SECRET_ACCESS_KEY }}
@@ -47,8 +47,6 @@ jobs:
               existing_repo_uri=$(aws ecr-public describe-repositories | jq '.repositories | map(.repositoryUri)' | grep "$NAME_AND_DESC" | sed 's/,//g' | xargs)
             fi
 
-            # check if image with correct tags does not exist
-            DOCKERFILE_DIGEST=$(sha256sum "$DOCKERFILE_PATH" | cut -d' ' -f1)
             image_exists=$(aws ecr-public describe-images --repository-name "$NAME_AND_DESC" --image-ids=imageTag="$VERSION" | jq '.imageDetails | map(.repositoryName)' | grep "$NAME_AND_DESC" | xargs)
             echo "###################################"
             echo "FOUND EXISTING IMAGE WITH TAG: $image_exists=$VERSION"
@@ -58,14 +56,22 @@ jobs:
               echo "BUILDING BASE IMAGE..."
               echo "###################################"
               pushd $PARENT_DIR
+
+              DOCKERFILE_DIGEST=$(sha256sum "$DOCKERFILE_PATH" | cut -d' ' -f1)
+              DATE_TAG=$(date +%F)
+
               # login
               aws ecr-public get-login-password | docker login --username AWS --password-stdin public.ecr.aws
 
               # build image
-              docker build -t $existing_repo_uri:$VERSION .
+              docker build \
+                -t $existing_repo_uri:$VERSION \
+                -t $existing_repo_uri:$DATE_TAG\
+                -t $existing_repo_uri:$DOCKERFILE_DIGEST \
+                -t $existing_repo_uri:latest .
 
               # push image to ECR
-              docker push $existing_repo_uri:$VERSION
+              docker push --all-tags $existing_repo_uri:latest
               popd
             fi
           done < <(echo "$DOCKERFILES")
