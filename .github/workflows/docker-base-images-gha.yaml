@@ -1,9 +1,9 @@
-name: docker-base-images
+name: docker-base-images-gha
 
 on: workflow_dispatch
 
 jobs:
-  build-base-images:
+  build-base-images-gha:
     strategy:
       fail-fast: false
       matrix:
