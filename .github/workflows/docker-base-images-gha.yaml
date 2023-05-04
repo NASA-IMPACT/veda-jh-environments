@@ -70,5 +70,4 @@ jobs:
             ${{ steps.tags.outputs.datetag }}
             ${{ steps.tags.outputs.digesttag }}
             ${{ steps.tags.outputs.latesttag }}
-          outputs: type=docker,dest=image.tar
         if: ${{ steps.changes.outputs.build == 'true' }}
