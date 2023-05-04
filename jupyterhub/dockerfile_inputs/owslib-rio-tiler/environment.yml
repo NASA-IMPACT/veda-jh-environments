@@ -1,0 +1,8 @@
+name: owslib-rio-tiler
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pip:
+    - rio-tiler==4.1.10
+    - OWSLib==0.28.1
