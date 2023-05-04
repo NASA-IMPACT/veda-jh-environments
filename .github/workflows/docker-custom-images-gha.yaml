@@ -14,7 +14,8 @@ jobs:
           fetch-depth: 3
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - id: set-matrix
+      - name: set-matrix
+        id: set-matrix
         run: |
           apt-get install jo
           CUSTOMDIRS=()
@@ -27,8 +28,8 @@ jobs:
           done < <(echo "$DOCKERFILES")
           IMAGE_MATRIX=$(jo -a "${CUSTOMDIRS[@]}")
           echo "IMAGE_MATRIX=${IMAGE_MATRIX}" >>$GITHUB_OUTPUT
-        outputs:
-          IMAGE_MATRIX: ${{ steps.set-matrix.outputs.IMAGE_MATRIX }}
+    outputs:
+      IMAGE_MATRIX: ${{ steps.set-matrix.outputs.IMAGE_MATRIX }}
 
   build-custom-images-gha:
     needs: build-dynamic-matrix
