@@ -203,12 +203,11 @@ jobs:
           # don't want github actions bot committing this
           popd
           rm -rf ./jupyterhub
-        if: ${{ steps.changes.outputs.build == 'true' }}
 
       - name: validate yaml manifest file
         run: yamllint ./gitops-deploy/manifests.yaml
 
       - name: commit ./gitops-deploy changes back
-        uses: EndBug/add-and-commit@v7
+        uses: EndBug/add-and-commit@v8
         with:
           default_author: github_actions
