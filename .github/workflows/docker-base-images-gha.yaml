@@ -65,7 +65,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          context: ../docker-images/base/${{ matrix.IMAGE }}
+          context: ./docker-images/base/${{ matrix.IMAGE }}
           tags: |
             ${{ steps.tags.outputs.datetag }}
             ${{ steps.tags.outputs.digesttag }}
