@@ -69,6 +69,16 @@ spec:
             allowPrivilegeEscalation: false
             runAsGroup: 65534
             runAsUser: 65534
+        - name: image-pull-singleuser-profilelist-1
+          image: public.ecr.aws/i8x6m1u9/owslib-rio-tiler:0.0.2
+          command:
+            - /bin/sh
+            - -c
+            - echo "Pulling complete"
+          securityContext:
+            allowPrivilegeEscalation: false
+            runAsGroup: 65534
+            runAsUser: 65534
       containers:
         - name: pause
           image: k8s.gcr.io/pause:3.8
