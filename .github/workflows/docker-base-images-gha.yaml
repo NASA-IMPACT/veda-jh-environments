@@ -16,6 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          fetch-depth: 3
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: sergeysova/jq-action@v2
@@ -32,7 +33,6 @@ jobs:
         run: |
           DATESTR=$(date +%F)
           datetag=${{ env.REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}:$DATESTR
-          echo "::set-output name=datetag::${datetag}"
           echo "datetag=${datetag}" >>$GITHUB_OUTPUT
 
           DIGEST=$(sha256sum ./docker-images/base/${{ matrix.IMAGE }}/Dockerfile | cut -d' ' -f1)
