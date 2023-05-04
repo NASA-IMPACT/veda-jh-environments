@@ -3,7 +3,7 @@ name: docker-custom-images-gha
 on:
   push:
     branches:
-      - feature/gha-custom-images
+      - main
 
 jobs:
   build-dynamic-matrix:
@@ -119,8 +119,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: azure/setup-helm@v3
-
-      - uses: sergeysova/jq-action@v2
 
       - name: download jupyterhub/jupyterhub helm version
         id: download_helm
