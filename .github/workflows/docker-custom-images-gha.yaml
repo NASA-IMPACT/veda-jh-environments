@@ -17,7 +17,7 @@ jobs:
       - name: set-matrix
         id: set-matrix
         run: |
-          apt-get install jo
+          sudo apt-get install -y jo
           CUSTOMDIRS=()
           DOCKERFILES=$(find ./docker-images/* -name "Dockerfile" ! -path '*/base/*' ! -path '*/examples/*' -prune)
           while read DOCKERFILE_PATH; do
