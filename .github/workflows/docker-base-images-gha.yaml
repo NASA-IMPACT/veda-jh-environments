@@ -1,0 +1,74 @@
+name: docker-base-images
+
+on: workflow_dispatch
+
+jobs:
+  build-base-images:
+    strategy:
+      fail-fast: false
+      matrix:
+        IMAGE: [ pangeo-notebook, pytorch-notebook, r-notebook ]
+    env:
+      REGISTRY_BASE_URL: public.ecr.aws/i8x6m1u9
+    name: ${{ matrix.IMAGE }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: sergeysova/jq-action@v2
+
+      - name: configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.DEPLOY_USER_AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.DEPLOY_USER_AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: set the tags for docker
+        id: tags
+        run: |
+          DATESTR=$(date +%F)
+          datetag=${{ env.REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}:$DATESTR
+          echo "::set-output name=datetag::${datetag}"
+
+          DIGEST=$(sha256sum ./docker-images/base/${{ matrix.IMAGE }}/Dockerfile | cut -d' ' -f1)
+          digesttag=${{ env.REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}:$DIGEST
+          echo "::set-output name=digesttag::${digesttag}"
+
+          latesttag=${{ env.REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}:latest
+          echo "::set-output name=latesttag::${latesttag}"
+
+      - name: check for changes
+        id: changes
+        run: |
+          if ! git diff --quiet HEAD~ -- ./docker-images/base/${{ matrix.IMAGE }}; then
+            echo "./docker-images/base/${{ matrix.IMAGE }} changed, building!"
+            echo "::set-output name=build::true"
+          else
+            echo "::set-output name=build::false"
+          fi
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        if: ${{ steps.changes.outputs.build == 'true' }}
+
+      - name: docker login for ecr
+        run:
+          aws ecr-public get-login-password | docker login --username AWS --password-stdin public.ecr.aws
+        if: ${{ steps.changes.outputs.build == 'true' }}
+
+      - name: docker build image
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          context: ../docker-images/base/${{ matrix.IMAGE }}
+          tags: |
+            ${{ steps.tags.outputs.datetag }}
+            ${{ steps.tags.outputs.digesttag }}
+            ${{ steps.tags.outputs.latesttag }}
+          outputs: type=docker,dest=image.tar
+        if: ${{ steps.changes.outputs.build == 'true' }}
