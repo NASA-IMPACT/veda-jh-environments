@@ -33,22 +33,23 @@ jobs:
           DATESTR=$(date +%F)
           datetag=${{ env.REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}:$DATESTR
           echo "::set-output name=datetag::${datetag}"
+          echo "datetag=${datetag}" >>$GITHUB_OUTPUT
 
           DIGEST=$(sha256sum ./docker-images/base/${{ matrix.IMAGE }}/Dockerfile | cut -d' ' -f1)
           digesttag=${{ env.REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}:$DIGEST
-          echo "::set-output name=digesttag::${digesttag}"
+          echo "digesttag=${digesttag}" >>$GITHUB_OUTPUT
 
           latesttag=${{ env.REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}:latest
-          echo "::set-output name=latesttag::${latesttag}"
+          echo "latesttag=${latesttag}" >>$GITHUB_OUTPUT
 
       - name: check for changes
         id: changes
         run: |
           if ! git diff --quiet HEAD~ -- ./docker-images/base/${{ matrix.IMAGE }}; then
             echo "./docker-images/base/${{ matrix.IMAGE }} changed, building!"
-            echo "::set-output name=build::true"
+            echo "build=true" >>$GITHUB_OUTPUT
           else
-            echo "::set-output name=build::false"
+            echo "build=false" >>$GITHUB_OUTPUT
           fi
 
       - name: Set up Docker Buildx
