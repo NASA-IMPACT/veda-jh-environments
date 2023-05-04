@@ -58,7 +58,7 @@ jobs:
       - name: create ecr repository if not
         uses: int128/create-ecr-repository-action@v1
         with:
-          repository: ${{ REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}
+          repository: ${{ env.REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}
           public: true
 
       - name: set the tags for docker
