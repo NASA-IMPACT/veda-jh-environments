@@ -55,6 +55,12 @@ jobs:
           aws-secret-access-key: ${{ secrets.DEPLOY_USER_AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: create ecr repository if not
+        uses: int128/create-ecr-repository-action@v1
+        with:
+          repository: ${{ REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}
+          public: true
+
       - name: set the tags for docker
         id: tags
         run: |
