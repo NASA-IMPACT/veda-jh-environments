@@ -1,5 +1,4 @@
 FROM mcr.microsoft.com/planetary-computer/r:latest
-ENV VERSION=0.0.1
 
 # NOTE: reasoning to use ONBUILD below from JH: https://github.com/pangeo-data/pangeo-docker-images/blob/master/base-image/Dockerfile#L83-L96
 # NOTE: below snippet taken and modified from JH images: https://github.com/pangeo-data/pangeo-docker-images/blob/master/base-image/Dockerfile#L141-L153
