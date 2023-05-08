@@ -94,14 +94,14 @@ dependencies:
 name: owslib-rio-tiler
 ```
 
-7. It's always a best practice that your intended environment uses either a [pinned yaml file](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html#preventing-packages-from-updating-pinning) 
+9. It's always a best practice that your intended environment uses either a [pinned yaml file](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html#preventing-packages-from-updating-pinning) 
 or other formats. Read more about this topic in [Specifying Custom Packages](./specifying_custom_packages.md)
 
-8. Push your changes on your feature branch up
+10. Push your changes on your feature branch up
 
 ```python
 git commit -m "add new JH environ"
 git push origin  feature/new-eis-science-env
 ```
 
-9. Then go to this repository and open a PR against the `main` branch
+11. Then go to this repository and open a PR against the `main` branch
