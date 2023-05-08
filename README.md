@@ -2,7 +2,7 @@
 
 ---
 
-### Index
+### Docs:
 
 [Base Images](./docs/base_images.md)
 
