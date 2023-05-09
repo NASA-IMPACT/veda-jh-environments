@@ -50,7 +50,7 @@ spec:
             runAsGroup: 65534
             runAsUser: 65534
         - name: image-pull-singleuser
-          image: jupyterhub/k8s-singleuser-sample:2.0.0
+          image: pangeo/pangeo-notebook:2023.01.13
           command:
             - /bin/sh
             - -c
