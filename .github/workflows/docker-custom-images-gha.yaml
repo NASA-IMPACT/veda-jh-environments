@@ -137,7 +137,7 @@ jobs:
           rm -rf ./jupyterhub
           helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
           helm pull jupyterhub/jupyterhub --version=2.0.0 --debug --untar
-          cp ./helm-valus/single-user-overrides.yaml .
+          cp ./helm-values/single-user-overrides.yaml .
 
       - name: copy all dockerfiles to helm chart
         id: copydockerfiles
