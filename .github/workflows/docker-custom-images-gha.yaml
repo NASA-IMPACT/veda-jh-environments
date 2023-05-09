@@ -133,9 +133,11 @@ jobs:
           # this downloads the version of jupyterhub we already use on the k8s cluster
           # 1) untars it to ./jupyterhub directory
           # 2) exposes the templates we will need later to run individually and template manifests
+          # 3) copies our overrides from ./helm-values/single-user-overrides.yaml to here
           rm -rf ./jupyterhub
           helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
           helm pull jupyterhub/jupyterhub --version=2.0.0 --debug --untar
+          cp ./helm-valus/single-user-overrides.yaml .
 
       - name: copy all dockerfiles to helm chart
         id: copydockerfiles
@@ -180,8 +182,8 @@ jobs:
           #####################
           # we want to take our custom $PROFILE_VALUES file and substitute it into the correct
           # jupyterhub values.yaml spot through a series of edits
-          START_VALUES=values.yaml
-          NEW_VALUES=new-values.yaml
+          START_VALUES=single-user-overrides.yaml
+          NEW_VALUES=overrides.yaml
 
           # find the existing empty "profileList" number
           LINE_TO_DELETE=$(cat "$START_VALUES" | grep -n profileList | cut -d':' -f1)
@@ -199,7 +201,7 @@ jobs:
 
           ######################
           # helm render only the template we care about deploying which the daemonset
-          helm template -s templates/image-puller/daemonset-continuous.yaml --release-name veda-sandbox-hub . -f new-values.yaml > ../gitops-deploy/manifests.yaml
+          helm template -s templates/image-puller/daemonset-continuous.yaml --release-name veda-sandbox-hub . -f values.yaml -f "$NEW_VALUES" > ../gitops-deploy/manifests.yaml
 
           # QC check in CI/CD runner
           cat ../gitops-deploy/manifests.yaml
