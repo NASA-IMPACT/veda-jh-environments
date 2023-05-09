@@ -199,7 +199,7 @@ jobs:
 
           ######################
           # helm render only the template we care about deploying which the daemonset
-          helm template -s templates/image-puller/daemonset-continuous.yaml . -f new-values.yaml > ../gitops-deploy/manifests.yaml
+          helm template -s templates/image-puller/daemonset-continuous.yaml --release-name veda-sandbox-hub . -f new-values.yaml > ../gitops-deploy/manifests.yaml
 
           # QC check in CI/CD runner
           cat ../gitops-deploy/manifests.yaml
