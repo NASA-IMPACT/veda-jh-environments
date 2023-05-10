@@ -167,7 +167,7 @@ jobs:
             VERSION=$(cat $DOCKERFILE_PATH | grep VERSION | cut -d'=' -f 2)
             NAME_AND_DESC=$(echo $DOCKERFILE_PATH | cut -d'/' -f 2)
 
-            printf "    - display-name: $NAME_AND_DESC\n"  >> $PROFILE_VALUES
+            printf "    - display_name: $NAME_AND_DESC\n"  >> $PROFILE_VALUES
             printf "      description: $NAME_AND_DESC\n"  >> $PROFILE_VALUES
             printf "      kubespawner_override:\n"  >> $PROFILE_VALUES
             printf "        image: $REGISTRY_BASE_URL/$NAME_AND_DESC:$VERSION\n"  >> $PROFILE_VALUES
