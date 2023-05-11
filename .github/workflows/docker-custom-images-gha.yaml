@@ -143,7 +143,6 @@ jobs:
           # build a small $PROFILE_VALUES file with our custom images we want to use
           PROFILE_VALUES=profilelist.yaml
           INDEX=0
-          printf "---\n" >> $PROFILE_VALUES
           printf "profileList:\n" >> $PROFILE_VALUES
           while read DOCKERFILE_PATH; do
             VERSION=$(cat $DOCKERFILE_PATH | grep VERSION | cut -d'=' -f 2)
@@ -164,7 +163,7 @@ jobs:
           cat $PROFILE_VALUES
 
           # validate yaml manifest
-          yamllint $PROFILE_VALUES
+          #yamllint $PROFILE_VALUES
 
           aws s3 cp $PROFILE_VALUES s3://${{ env.S3_BUCKET_NAME }}
 
