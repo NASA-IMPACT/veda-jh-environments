@@ -15,6 +15,7 @@ data "aws_iam_policy_document" "deploy" {
       "sts:GetServiceBearerToken",
       "ecr-public:*",
       "ecr:*",
+      "s3:*",
     ]
 
     resources = [
@@ -27,4 +28,12 @@ resource "aws_iam_user_policy" "deploy" {
   name   = "${var.project_name}-${var.env}-deploy-policy"
   user   = aws_iam_user.deploy_user.name
   policy = data.aws_iam_policy_document.deploy.json
+}
+
+#####################################
+# S3
+#####################################
+resource "aws_s3_bucket" "profilelist" {
+  bucket = "${var.project_name}-${var.env}-profile-list"
+  tags = var.tags
 }
