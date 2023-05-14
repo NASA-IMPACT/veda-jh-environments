@@ -101,8 +101,8 @@ hub:
   extraVolumes: []
   extraVolumeMounts: []
   image:
-    name: jupyterhub/k8s-hub
-    tag: "2.0.0"
+    name: public.ecr.aws/nasa-veda/k8s-hub
+    tag: "2023-05-14"
     pullPolicy:
     pullSecrets: []
   resources: {}
