@@ -125,6 +125,8 @@ jobs:
           fetch-depth: 3
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - uses: mikefarah/yq@master
+
       - name: configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -133,7 +135,6 @@ jobs:
           aws-region: us-east-1
 
       - name: find all dockerfiles && create profileList yaml
-        id: valuesfile
         run: |
           #####################
           # get a list of all dockerfiles and exclude the custom images we don't want to use
@@ -142,6 +143,7 @@ jobs:
           #####################
           # build a small $PROFILE_VALUES file with our custom images we want to use
           PROFILE_VALUES=profilelist.yaml
+          PROFILE_VALUES_JSON=profilelist.json
           INDEX=0
           printf "profileList:\n" >> $PROFILE_VALUES
           while read DOCKERFILE_PATH; do
@@ -165,9 +167,11 @@ jobs:
           # validate yaml manifest
           #yamllint $PROFILE_VALUES
 
-          aws s3 cp $PROFILE_VALUES s3://${{ env.S3_BUCKET_NAME }}
+          # convert to JSON so easier to deal with on Kubespawner image
+          yq -o=json '.' $PROFILE_VALUES > $PROFILE_VALUES_JSON
+          aws s3 cp $PROFILE_VALUES_JSON s3://${{ env.S3_BUCKET_NAME }}
 
-          rm $PROFILE_VALUES
+          rm $PROFILE_VALUES $PROFILE_VALUES_JSON
 
 #      - name: commit ./gitops-deploy changes back
 #        uses: EndBug/add-and-commit@v8

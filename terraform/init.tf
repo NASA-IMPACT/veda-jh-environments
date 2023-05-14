@@ -1,10 +1,15 @@
 provider "aws" {
+  # default provider
   region = "us-west-1"
+
 }
 
 provider "aws" {
-  alias  = "west2"
-  region = "us-west-2"
+  alias  = "smce-west1"
+  region = "us-west-1"
+  access_key = var.smce_aws_access_key
+  secret_key = var.smce_aws_secret_key
+  token      = var.smce_aws_session_token
 }
 
 terraform {

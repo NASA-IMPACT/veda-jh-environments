@@ -1,3 +1,4 @@
 *.tfstate
 .terraform
 *.zip
+.envtf.sh
