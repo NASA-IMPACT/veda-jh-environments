@@ -73,11 +73,11 @@ hub:
   args: []
   extraConfig:
     01-profilelist: |
-      import boto3
-      import os
-      import json
-
       async def custom_options_form(self):
+          import boto3
+          import os
+          import json
+
           profile_list = []
 
           # auth/policies from IAM for k8s ServiceAccount(s) via cluster OIDC provider
