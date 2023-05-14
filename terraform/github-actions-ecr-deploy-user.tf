@@ -32,7 +32,7 @@ resource "aws_iam_user_policy" "deploy" {
 
 
 ########################################
-# cross account bucket policy for SMCE role to use it
+# S3 Bucket Policy (cross account for SMCE role)
 ########################################
 data "aws_iam_policy_document" "allow_access_from_another_account" {
   statement {
