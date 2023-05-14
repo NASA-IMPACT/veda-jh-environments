@@ -64,50 +64,22 @@ hub:
         - ReadWriteOnce
       storage: 1Gi
       subPath:
-      storageClassName: gp2
+      storageClassName:
     url:
     password:
   labels: {}
   annotations: {}
   command: []
   args: []
-  extraConfig:
-    01-profilelist: |
-      async def custom_options_form(self):
-          import boto3
-          import os
-          import json
-          #import asyncio
-
-          #loop = asyncio.get_event_loop()
-
-          profile_list = []
-
-          # auth/policies from IAM for k8s ServiceAccount(s) via cluster OIDC provider
-          s3 = boto3.client("s3",
-            region_name="us-west-1"
-          )
-
-          s3_file = s3.get_object(Bucket='veda-jh-environments-west1-sandbox-profile-list', Key='profilelist.json')['Body'].read()
-          json_content = s3_file.decode('utf-8').strip()
-          print(f"[ JSON CONTENT ]: {json_content}")
-          content = json.loads(json_content)
-          print(f"[ CONTENT ]: {content}")
-          self.profile_list += content['profileList']
-          print(f"[ PROFILE LIST ]: {self.profile_list}")
-          return self._options_form_default()
-
-          #loop.run_in_executor(None, add_profile_list)
-
-      c.KubeSpawner.options_form = custom_options_form
+  extraConfig: {}
   extraFiles: {}
   extraEnv: {}
   extraContainers: []
   extraVolumes: []
   extraVolumeMounts: []
   image:
-    name: public.ecr.aws/nasa-veda/k8s-hub
-    tag: "2023-05-14"
+    name: jupyterhub/k8s-hub
+    tag: "2.0.0"
     pullPolicy:
     pullSecrets: []
   resources: {}
@@ -148,7 +120,7 @@ hub:
     enabled: true
     initialDelaySeconds: 300
     periodSeconds: 10
-    failureThreshold: 300
+    failureThreshold: 30
     timeoutSeconds: 3
   readinessProbe:
     # The readinessProbe's aim is to provide a successful startup indication,
@@ -234,7 +206,7 @@ proxy:
       enabled: true
       initialDelaySeconds: 60
       periodSeconds: 10
-      failureThreshold: 300
+      failureThreshold: 30
       timeoutSeconds: 3
     readinessProbe:
       enabled: true
@@ -410,6 +382,12 @@ singleuser:
       pvcNameTemplate: claim-{username}{servername}
       volumeNameTemplate: volume-{username}{servername}
       storageAccessModes: [ReadWriteOnce]
+  image:
+    name: jupyterhub/k8s-singleuser-sample
+    tag: "2.0.0"
+    pullPolicy:
+    pullSecrets: []
+  startTimeout: 300
   cpu:
     limit:
     guarantee:
@@ -422,12 +400,6 @@ singleuser:
   cmd: jupyterhub-singleuser
   defaultUrl:
   extraPodConfig: {}
-  image:
-    name: pangeo/pangeo-notebook
-    tag: "2023.01.13"
-    pullPolicy:
-    pullSecrets: []
-  startTimeout: 300
   profileList: []
 
 # scheduling relates to the user-scheduler pods and user-placeholder pods.
