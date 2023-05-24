@@ -77,9 +77,6 @@ hub:
           import boto3
           import os
           import json
-          #import asyncio
-
-          #loop = asyncio.get_event_loop()
 
           profile_list = []
 
@@ -96,8 +93,6 @@ hub:
           self.profile_list += content['profileList']
           print(f"[ PROFILE LIST ]: {self.profile_list}")
           return self._options_form_default()
-
-          #loop.run_in_executor(None, add_profile_list)
 
       c.KubeSpawner.options_form = custom_options_form
   extraFiles: {}
