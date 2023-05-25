@@ -1,8 +1,0 @@
-name: eis-fire-inspect
-channels:
-  - conda-forge
-  - defaults
-dependencies:
-  - pip:
-    - rio-tiler==4.1.10
-    - OWSLib==0.28.1
