@@ -5,7 +5,8 @@ FROM pangeo/pangeo-notebook:2023.04.15
 RUN echo "[ CONDA_ENV ]: ${CONDA_ENV}"
 ONBUILD RUN echo "Checking for 'conda-lock.yml' 'conda-linux-64.lock' or 'environment.yml'..." \
         ; if test -f "environment.yml" ; then \
-        mamba env create --name ${CONDA_ENV} -f environment.yml  \
+        mambda env update --name ${CONDA_ENV} -f environment.yml \
+        #mamba env create --name ${CONDA_ENV} -f environment.yml  \
         ; elif test -f "conda-linux-64.lock" ; then \
         mamba create --name ${CONDA_ENV} --file conda-linux-64.lock \
         ; else echo "No conda-lock.yml, conda-linux-64.lock, or environment.yml! *creating default env*" ; \
