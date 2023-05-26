@@ -1,4 +1,3 @@
+FROM public.ecr.aws/i8x6m1u9/pangeo-notebook:ec62294b16bed2d38bd4b4d70746142c02d0356f2510443c7228fbe5730f4bbf
 ENV VERSION=0.0.1
-ENV CONDA_ENV=owslib-rio-tiler
-FROM public.ecr.aws/i8x6m1u9/pangeo-notebook:0c60b73d2b3e00f7cadcee93f196bcb2444f7cce7b38270dcc63aba83700a059
 COPY environment.yml .
