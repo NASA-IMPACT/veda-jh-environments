@@ -1,5 +1,0 @@
-name: only here to generate a sha256sum for ci ;-)
-channels:
-  - conda-forge
-  - defaults
-dependencies: []
