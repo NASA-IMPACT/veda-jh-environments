@@ -12,13 +12,13 @@ RUN mkdir /home/jovyan/custom
 ONBUILD COPY --chown=jovyan:jovyan . /home/jovyan/custom
 ONBUILD RUN echo "Checking for 'environment.yml' or 'conda-linux-64.lock'..." \
         ; if test -f "./custom/update-environment.yml" ; then \
-        echo "[ UPDATE ENV RUNNING ]:..."
+        echo "[ UPDATE ENV RUNNING ]:..." \
         mamba env update --name notebook -f ./custom/update-environment.yml \
         ; elif test -f "./custom/create-environment.yml" ; then \
-        echo "[ CREATE ENV RUNNING ]:..."
+        echo "[ CREATE ENV RUNNING ]:..." \
         mamba env create --name ${CONDA_ENV} -f ./custom/create-environment.yml  \
         ; elif test -f "./custom/environment.yml" ; then \
-        echo "[ CREATE ENV RUNNING ]:..."
+        echo "[ CREATE ENV RUNNING ]:..." \
         mamba env create --name ${CONDA_ENV} -f ./custom/environment.yml  \
         ; elif test -f "./custom/conda-linux-64.lock" ; then \
         mamba create --name ${CONDA_ENV} --file ./custom/conda-linux-64.lock \
