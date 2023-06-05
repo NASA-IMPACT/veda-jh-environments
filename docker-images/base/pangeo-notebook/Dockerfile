@@ -1,11 +1,5 @@
 FROM pangeo/pangeo-notebook:2023.04.15
 
-# used to dynamically override `CONDA_ENV` declared in base image
-# (https://github.com/pangeo-data/pangeo-docker-images/blob/master/base-image/Dockerfile#L9)
-# to use name passed in as a build arg during `docker build` command
-ARG CONDA_ENV_NAME_OVERRIDE
-ENV CONDA_ENV=$CONDA_ENV_NAME_OVERRIDE
-
 # NOTE: reasoning to use ONBUILD below from JH: https://github.com/pangeo-data/pangeo-docker-images/blob/master/base-image/Dockerfile#L83-L96
 # NOTE: below snippet taken and modified from JH images: https://github.com/pangeo-data/pangeo-docker-images/blob/master/base-image/Dockerfile#L141-L153
 RUN mkdir /home/jovyan/custom
