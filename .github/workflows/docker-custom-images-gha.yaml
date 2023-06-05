@@ -110,6 +110,8 @@ jobs:
             ${{ steps.tags.outputs.versiontag }}
             ${{ steps.tags.outputs.digesttag }}
             ${{ steps.tags.outputs.latesttag }}
+          build-args: |
+            CONDA_ENV_NAME_OVERRIDE=${{ matrix.IMAGE }}
         if: ${{ steps.changes.outputs.build == 'true' }}
 
   template-and-cp-s3:
