@@ -13,4 +13,4 @@ ONBUILD RUN echo "Checking for environment files in '*.yml' ..."; \
         printf "[ FOUND ]: %s\n" $SHARED_ENVIRONMENTS_PATH; \
         CONDA_ENV_NAME=$(echo $SHARED_ENVIRONMENTS_PATH | cut -d'/' -f 3); \
         mamba env create --name ${CONDA_ENV_NAME} -f $SHARED_ENVIRONMENTS_PATH; \
-    done < <(echo "$SHARED_ENVIRONMENTS"); \
+    done < <(echo "$SHARED_ENVIRONMENTS");
