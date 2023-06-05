@@ -1,2 +1,2 @@
-FROM public.ecr.aws/i8x6m1u9/pangeo-notebook-shared:02b2761b98a2a9e99824ecc3892dd184ebbb70b5e79b7a47f4912659900f9854
+FROM public.ecr.aws/i8x6m1u9/pangeo-notebook-shared:ff43fc0e56bcf52a8d9abfc563d2bf9eaa66334eaece7e4e391e8a15e7154dad
 ENV VERSION=0.0.1
