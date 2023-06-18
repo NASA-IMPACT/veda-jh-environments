@@ -3,6 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - ipykernel
   - pip
   - pip:
     - rio-tiler==4.1.10

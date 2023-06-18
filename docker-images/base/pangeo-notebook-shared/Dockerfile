@@ -1,4 +1,4 @@
-FROM pangeo/pangeo-notebook:2023.04.15
+FROM pangeo/pangeo-notebook:2022.12.07
 
 # NOTE: reasoning to use ONBUILD below from JH: https://github.com/pangeo-data/pangeo-docker-images/blob/master/base-image/Dockerfile#L83-L96
 # if override arg passed then use that instead of default in base image
