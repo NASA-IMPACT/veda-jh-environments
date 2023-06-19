@@ -90,7 +90,7 @@ hub:
           print(f"[ JSON CONTENT ]: {json_content}")
           content = json.loads(json_content)
           print(f"[ CONTENT ]: {content}")
-          self.profile_list += content['profileList']
+          self.profile_list = content['profileList']
           print(f"[ PROFILE LIST ]: {self.profile_list}")
           return self._options_form_default()
 
@@ -419,7 +419,7 @@ singleuser:
   extraPodConfig: {}
   image:
     name: pangeo/pangeo-notebook
-    tag: "2023.01.13"
+    tag: "2022.12.07"
     pullPolicy:
     pullSecrets: []
   startTimeout: 300
