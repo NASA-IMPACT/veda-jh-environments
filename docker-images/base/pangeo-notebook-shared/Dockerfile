@@ -6,6 +6,7 @@ FROM pangeo/pangeo-notebook:2022.12.07
 ONBUILD ARG CONDA_ENV_NAME_OVERRIDE=$CONDA_ENV
 ONBUILD ARG CONDA_ENV_NAME=$CONDA_ENV_NAME_OVERRIDE
 ONBUILD COPY --chown=jovyan:jovyan . /home/jovyan
+
 # NOTE: below snippet taken and modified from JH images: https://github.com/pangeo-data/pangeo-docker-images/blob/master/base-image/Dockerfile#L141-L153
 ONBUILD RUN echo "Checking for environment files in '*.yml' ..."; \
     SHARED_ENVIRONMENTS=$(find ./environments/*.yml); \
