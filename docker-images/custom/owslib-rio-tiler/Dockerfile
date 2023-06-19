@@ -1,2 +1,3 @@
-FROM public.ecr.aws/i8x6m1u9/pangeo-notebook:9e5526966d5bbc8321a9862dbbbf81b0736fe6bc95bf9b1fd39bf9e35d3e4415
+FROM public.ecr.aws/nasa-veda/pangeo-notebook-shared:1fb4b32b3387820e117cc105397e6b4cee8be4c172bd8e5bd59914ce2cb733ef
+# above is JH version 3.0.0
 ENV VERSION=0.0.9
