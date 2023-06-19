@@ -12,7 +12,7 @@ ONBUILD RUN echo "Checking for 'environment.yml' or 'conda-linux-64.lock'..." \
         echo "[ UPDATE ENV RUNNING ]:..." && mamba env update --name ${CONDA_ENV} -f custom/update-environment.yml \
         ; elif test -f "custom/environment.yml" ; then \
         echo "[ CREATE ENV RUNNING ]:..." && \
-            mamba env create --name ${CONDA_ENV_NAME} -f conda-linux-64.lock &&  \
+            mamba create --name ${CONDA_ENV_NAME} --file conda-linux-64.lock &&  \
             mamba env update --name ${CONDA_ENV_NAME} -f custom/environment.yml  \
         ; elif test -f "custom/conda-linux-64.lock" ; then \
         mamba create --name ${CONDA_ENV_NAME} --file custom/conda-linux-64.lock \
