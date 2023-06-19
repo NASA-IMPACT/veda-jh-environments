@@ -10,7 +10,7 @@ ONBUILD COPY --chown=jovyan:jovyan . /home/jovyan/custom
 # below snippet taken and modified from JH images: https://github.com/pangeo-data/pangeo-docker-images/blob/master/base-image/Dockerfile#L141-L153
 ONBUILD RUN echo "Checking for 'environment.yml' or 'conda-linux-64.lock'..." \
         ; if test -f "custom/standalone-environment.yml" ; then \
-        echo "[ CREATE STANDALONE ENV RUNNING ]:..." && mamba create --name ${CONDA_ENV_NAME} -f custom/standalone-environment.yml \
+        echo "[ CREATE STANDALONE ENV RUNNING ]:..." && mamba env create --name ${CONDA_ENV_NAME} -f custom/standalone-environment.yml \
         ; elif test -f "custom/environment.yml" ; then \
         echo "[ CREATE ENV RUNNING ]:..." && \
             mamba create --name ${CONDA_ENV_NAME} --file conda-linux-64.lock &&  \
