@@ -8,11 +8,11 @@ ONBUILD ARG CONDA_ENV_NAME=$CONDA_ENV_NAME_OVERRIDE
 ONBUILD COPY --chown=jovyan:jovyan . /home/jovyan/custom
 # NOTE: below snippet taken and modified from JH images: https://github.com/pangeo-data/pangeo-docker-images/blob/master/base-image/Dockerfile#L141-L153
 ONBUILD RUN echo "Checking for 'environment.yml' or 'conda-linux-64.lock'..." \
-        ; if test -f "update-environment.yml" ; then \
+        ; if test -f "custom/update-environment.yml" ; then \
         echo "[ UPDATE ENV RUNNING ]:..." && mamba env update --name ${CONDA_ENV} -f custom/update-environment.yml \
-        ; elif test -f "environment.yml" ; then \
+        ; elif test -f "custom/environment.yml" ; then \
         echo "[ CREATE ENV RUNNING ]:..." && mamba env create --name ${CONDA_ENV_NAME} -f custom/environment.yml  \
-        ; elif test -f "conda-linux-64.lock" ; then \
+        ; elif test -f "custom/conda-linux-64.lock" ; then \
         mamba create --name ${CONDA_ENV_NAME} --file custom/conda-linux-64.lock \
         ; else echo "No conda-linux-64.lock, or environment.yml! *creating default env*" ; \
         mamba create --name ${CONDA_ENV_NAME} pangeo-notebook \
