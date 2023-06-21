@@ -86,6 +86,7 @@ data "aws_iam_policy_document" "web_assume_role_policy" {
       # this line gives all k8s ServiceAccount(s) in the namespace 'jupyterhub' access to assume this role
       values = [
         "system:serviceaccount:jupyterhub:*",
+        "system:serviceaccount:jupyterhub-v311:*",
       ]
     }
   }
