@@ -1,12 +1,21 @@
-# Adding Custom Images for JupyterHub (JH) Profile
+# Creating Custom Images for JupyterHub (JH)
 
-### Intro
+This document describes how to create custom images. These images will be built and pushed to the image repository defined in [./.github/workflows/docker-custom-images-gha.yaml](./.github/workflows/docker-custom-images-gha.yaml). At the moment that image repository is AWS ECR.
 
-0. Navigate to `/docker-images/examples/`
+## Setup
+
+```bash
+git clone git@github.com:NASA-IMPACT/veda-jh-environments.git
+cd veda-jh-environments
+```
+
+## How custom JupyterHub images work
+
+0. Navigate to `docker-images/examples/`
 
 1. Each folder in this directory contains configuration files for a custom image
 
-2. For a quick example navigate to `/docker-images/examples/owslib-rio-tiler`. Note the two files
+2. For a quick example navigate to `docker-images/examples/owslib-rio-tiler`. Note the two files
 that are present in this folder. Let's talk about each one.
 
     ```python
@@ -61,13 +70,13 @@ Below we laboriously walk through the steps of copying an existing example:
 3. copy an example to the `/docker-images/custom/` directory and give it a unique name
 
     ```python
-    $ cp -R /docker-images/examples/owslib-rio-tiler  /docker-images/custom/eis-science-env
+    $ cp -R docker-images/examples/owslib-rio-tiler  docker-images/custom/eis-science-env
     ```
 
 4. navigate to that new directory
 
     ```python
-    $ cd /docker-images/custom/eis-science-env
+    $ cd docker-images/custom/eis-science-env
     ```
 
 5. open your `Dockerfile` and choose a base image that makes sense (read more about [base images here](./base_images.md)) 

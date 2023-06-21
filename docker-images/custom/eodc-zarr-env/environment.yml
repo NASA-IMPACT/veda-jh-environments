@@ -1,0 +1,9 @@
+name: eodc-zarr-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pip:
+      - git+https://github.com/pangeo-forge/pangeo-forge-recipes.git@beam-refactor
+      - git+https://github.com/carbonplan/cmip6-downscaling.git
+      - 'apache-beam[interactive, dataframe]'
