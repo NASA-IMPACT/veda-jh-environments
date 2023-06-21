@@ -1,3 +1,3 @@
-FROM public.ecr.aws/nasa-veda/pangeo-notebook:209c3ea59d1cb4ace4c57eb034fe48c2756eb28466e61e24703e71d2b3cf2f8f
-# above is JH version 3.0.0
-ENV VERSION=0.0.9
+FROM public.ecr.aws/nasa-veda/pangeo-notebook:0a314a03073e896b603c77781f8ba908a6a0acb9bf8508d1326d35fa0d1f20b5
+# above hash is JH version 3.1.1
+ENV VERSION=0.0.10
