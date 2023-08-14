@@ -1,0 +1,8 @@
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - ipykernel
+  - pip
+  - pip:
+    - git+https://github.com/MAAP-Project/stac_ipyleaflet.git#egg-info=stac_ipyleaflet
