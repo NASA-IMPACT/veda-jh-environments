@@ -2,7 +2,7 @@
 
 ### Intro
 
-0. Navigate to `/docker-images/examples/`
+0. Clone this repo and navigate to `/docker-images/examples/`
 
 1. Each folder in this directory contains configuration files for a custom image
 
