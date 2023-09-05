@@ -56,7 +56,7 @@ jobs:
           aws-region: us-east-1
 
       - name: create ecr repository if not
-        uses: int128/create-ecr-repository-action@v1
+        uses: int128/create-ecr-repository-action@v1.184.0
         with:
           repository: ${{ matrix.IMAGE }}
           public: true
