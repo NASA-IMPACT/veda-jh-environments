@@ -55,10 +55,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.DEPLOY_USER_AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
+      - name: echo out MATRIX image name
+        run: |
+          echo "#########################"
+          echo  ${{ matrix.IMAGE }}
+
       - name: create ecr repository if not
         uses: int128/create-ecr-repository-action@v1.184.0
         with:
           repository: ${{ matrix.IMAGE }}
+          repository-policy: .github/workflows/repository-policy.json
           public: true
 
       - name: set the tags for docker
