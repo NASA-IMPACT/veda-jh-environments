@@ -37,67 +37,56 @@ dependencies:
 
 ## Get sha256sum Tag of the Image
 
+0. you'll need `jq` utility to help parse and run functions on the AWS CLI JSON output. Install with `brew install jq`
+
 1. The image building pipeline [creates various tags](https://github.com/NASA-IMPACT/veda-jh-environments/blob/main/.github/workflows/docker-custom-images-gha.yaml#L67-L80
 ) for the image but the one we want to use is the sha256sum of the `environment.yml` 
 
-2. List out the newest image tag by querying ECR with `aws-cli` where `AWS_PROFILE=uah` points to your `AWS_PROFILE` for AWS Account ID `853558080719`
+2. Get the newest image tag by querying ECR with `aws-cli` where `AWS_PROFILE=uah` points to your `AWS_PROFILE` for AWS Account ID `853558080719`.
+The command below sorts our image tags by `createdAt` in the AWS CLI query and then we use `jq` to filter only the sha256sums. Since they
+are sorted by `createdAt` ascending we'll want to grab the last one in the output which is `5068290376e8c3151d97a36ae6485bb7ff79650b94aecc93ffb2ea1b42d76460`
+below:
 
 ```bash
-$ AWS_PROFILE=uah aws ecr-public describe-image-tags --repository-name nasa-veda-singleuser --region us-east-1
+$ AWS_PROFILE=uah aws ecr-public describe-image-tags \
+    --repository-name nasa-veda-singleuser \
+    --region us-east-1 \
+    --query 'sort_by(imageTagDetails,& createdAt)' \
+     | jq '.[] | select(.imageTag | test("^[a-fA-F0-9]{1,64}$"))'
 
 {
-    "imageTagDetails": [
-        {
-            "imageTag": "b807c7efa97c8df9ca38779f7e59d09f889fde9299b0d19de80389cf6b064f90",
-            "createdAt": "2023-08-14T09:44:23.753000-07:00",
-            "imageDetail": {
-                "imageDigest": "sha256:d93e572d19ffa270ccbab1fa315d45e73249527d4410091688709b16408b70ad",
-                "imageSizeInBytes": 2668455672,
-                "imagePushedAt": "2023-08-14T09:44:22.678000-07:00",
-                "imageManifestMediaType": "application/vnd.docker.distribution.manifest.v2+json",
-                "artifactMediaType": "application/vnd.docker.container.image.v1+json"
-            }
-        },
-        {
-            "imageTag": "latest",
-            "createdAt": "2023-08-14T09:44:24.211000-07:00",
-            "imageDetail": {
-                "imageDigest": "sha256:d93e572d19ffa270ccbab1fa315d45e73249527d4410091688709b16408b70ad",
-                "imageSizeInBytes": 2668455672,
-                "imagePushedAt": "2023-08-14T09:44:22.678000-07:00",
-                "imageManifestMediaType": "application/vnd.docker.distribution.manifest.v2+json",
-                "artifactMediaType": "application/vnd.docker.container.image.v1+json"
-            }
-        },
-        {
-            "imageTag": "0.0.1",
-            "createdAt": "2023-08-14T09:44:23.264000-07:00",
-            "imageDetail": {
-                "imageDigest": "sha256:d93e572d19ffa270ccbab1fa315d45e73249527d4410091688709b16408b70ad",
-                "imageSizeInBytes": 2668455672,
-                "imagePushedAt": "2023-08-14T09:44:22.678000-07:00",
-                "imageManifestMediaType": "application/vnd.docker.distribution.manifest.v2+json",
-                "artifactMediaType": "application/vnd.docker.container.image.v1+json"
-            }
-        },
-        {
-            "imageTag": "2023-08-14",
-            "createdAt": "2023-08-14T09:44:22.772000-07:00",
-            "imageDetail": {
-                "imageDigest": "sha256:d93e572d19ffa270ccbab1fa315d45e73249527d4410091688709b16408b70ad",
-                "imageSizeInBytes": 2668455672,
-                "imagePushedAt": "2023-08-14T09:44:22.678000-07:00",
-                "imageManifestMediaType": "application/vnd.docker.distribution.manifest.v2+json",
-                "artifactMediaType": "application/vnd.docker.container.image.v1+json"
-            }
-        }
-    ]
+  "imageTag": "fb40f1fcd74de7ec270d07b7acec184a916b4288098dde951e3d910ac5e35ba5",
+  "createdAt": "2023-09-05T13:13:49.309000-07:00",
+  "imageDetail": {
+    "imageDigest": "sha256:2bac0a1d831dbad33ab8b9349892de69982bc3ed0caaf988472e45dedb094bb7",
+    "imageSizeInBytes": 2667381776,
+    "imagePushedAt": "2023-09-05T13:13:45.293000-07:00",
+    "imageManifestMediaType": "application/vnd.docker.distribution.manifest.v2+json",
+    "artifactMediaType": "application/vnd.docker.container.image.v1+json"
+  }
 }
-```
-3. Don't use the date, version or `latest` tag but copy the sha tag:
-
-```bash
-"imageTag": "b807c7efa97c8df9ca38779f7e59d09f889fde9299b0d19de80389cf6b064f90",
+{
+  "imageTag": "ff1d8629d2e646942a11ba5af4f078f3a3edb06962e7da9903e7f321f2c08cbe",
+  "createdAt": "2023-09-06T11:48:36.987000-07:00",
+  "imageDetail": {
+    "imageDigest": "sha256:58863497feeb021bd9780c5086d4fa5586f4a0126158844b22d4af4bd196a4f9",
+    "imageSizeInBytes": 2667372258,
+    "imagePushedAt": "2023-09-06T11:48:32.974000-07:00",
+    "imageManifestMediaType": "application/vnd.docker.distribution.manifest.v2+json",
+    "artifactMediaType": "application/vnd.docker.container.image.v1+json"
+  }
+}
+{
+  "imageTag": "5068290376e8c3151d97a36ae6485bb7ff79650b94aecc93ffb2ea1b42d76460",
+  "createdAt": "2023-09-06T12:14:18.371000-07:00",
+  "imageDetail": {
+    "imageDigest": "sha256:162641a138c0f4e6eee9b3cfd6288e84f3dbbc712d69a53a96e5291de381c0fb",
+    "imageSizeInBytes": 2667375957,
+    "imagePushedAt": "2023-09-06T12:14:14.313000-07:00",
+    "imageManifestMediaType": "application/vnd.docker.distribution.manifest.v2+json",
+    "artifactMediaType": "application/vnd.docker.container.image.v1+json"
+  }
+}
 ```
 
 ## Put in a PR against 2i2c's Infrastructure Repo
