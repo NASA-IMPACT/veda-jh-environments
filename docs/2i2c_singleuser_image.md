@@ -93,10 +93,12 @@ $ AWS_PROFILE=uah aws ecr-public describe-image-tags \
 
 1. If you haven't already [clone DS's fork](https://github.com/developmentseed/infrastructure/) of [2i2c's insfrastructure repo](https://github.com/2i2c-org/infrastructure)
 
-2. In `config/clusters/nasa-veda/common.values.yaml` you'll see the `singleuser` image block and tags. Update the tag with the `sha` from the last step and put in a [PR similar to this older example](https://github.com/2i2c-org/infrastructure/pull/2981/files)
+2. In `config/clusters/nasa-veda/common.values.yaml` you'll see the `singleuser` image block and tags. Update the tag with the `sha` from the last step. Also update the sha in the `image` key
+located at `profile_options.image.options.pangeo.kubespawner_override.image`. Probably best to refer to a past [PR over here](https://github.com/2i2c-org/infrastructure/pull/3106/files)
 
-3. Since we don't have an accessible k8s cluster to play with these new images it's best to explicitly ask in the PR to 2i2c update https://staging.nasa-veda.2i2c.cloud/ first so we can play with it and then if all looks
-good we can alert them to promote it to https://nasa-veda.2i2c.cloud/
+3. Since we don't have an accessible k8s cluster to play with the best option is to use the existing hub's "Other" option where we can try out our
+custom image by referring to it. Then to doubley make sure things work we can explicitly as in PR for 2i2c to update https://staging.nasa-veda.2i2c.cloud/ first 
+so we can play with it and then if all looks good we can alert them to promote it to https://nasa-veda.2i2c.cloud/
 
 4. After the PR is in we drink some coffee and wait for 2i2c to do the work
 
