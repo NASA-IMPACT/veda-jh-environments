@@ -7,7 +7,7 @@ LABEL org.opencontainers.image.source=https://github.com/NASA-IMPACT/veda-jh-env
 ENV DEBIAN_FRONTEND=non-interactive
 RUN echo "installing apt-get packages..." \
     && apt-get update --fix-missing > /dev/null \
-    && apt-get install -y apt-utils wget zip tzdata python3-pip > /dev/null \
+    && apt-get install -y apt-utils wget git zip tzdata python3-pip > /dev/null \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 ENV TZ UTC
