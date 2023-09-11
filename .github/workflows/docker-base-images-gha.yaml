@@ -7,7 +7,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        IMAGE: [ pangeo-notebook, pangeo-notebook-shared, pytorch-notebook, r-notebook, k8s-hub ]
+        IMAGE: [ pangeo-notebook, pangeo-notebook-shared, pytorch-notebook, r-notebook, k8s-hub,  nasa-veda-singleruser-init ]
     env:
       REGISTRY_BASE_URL: public.ecr.aws/i8x6m1u9
     name: ${{ matrix.IMAGE }}
