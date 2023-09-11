@@ -1,5 +1,6 @@
 import subprocess
 import argparse
+import os
 
 
 def clone_veda_docs(target_home_path):
