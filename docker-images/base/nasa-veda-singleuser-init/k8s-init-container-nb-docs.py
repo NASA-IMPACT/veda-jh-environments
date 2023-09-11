@@ -23,4 +23,4 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("target", help="The target home path which should exist.")
     args = parser.parse_args()
-    clone_veda_docs(parser.target)
+    clone_veda_docs(args.target)
