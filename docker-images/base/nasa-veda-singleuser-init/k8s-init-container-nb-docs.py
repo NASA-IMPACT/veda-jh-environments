@@ -7,7 +7,7 @@ def clone_veda_docs(target_home_path):
     try:
         target_path = os.path.join(target_home_path, "veda-docs-examples")
         result = subprocess.run(
-            ["gitpuller", "https://github.com/NASA-IMPACT/veda-docs/", "main", target_path],
+            ["/home/jovyan/.local/bin/gitpuller", "https://github.com/NASA-IMPACT/veda-docs/", "main", target_path],
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
