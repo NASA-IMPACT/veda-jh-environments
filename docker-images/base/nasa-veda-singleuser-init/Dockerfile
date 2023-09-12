@@ -23,5 +23,5 @@ WORKDIR /opt
 
 RUN pip3 install nbgitpuller
 # NOTE: the below script is used as a k8s post-start hook to copy /veda-docs repository to all user pods
-COPY ./k8s-init-container-nb-docs.py /opt/k8s-init-container-nb-docs.py
+COPY --chown=jovyan:jovyan ./k8s-init-container-nb-docs.py /opt/k8s-init-container-nb-docs.py
 RUN chmod 777 /opt/k8s-init-container-nb-docs.py
