@@ -9,7 +9,7 @@ RUN echo "installing apt-get packages..." \
     && apt-get update --fix-missing > /dev/null \
     && apt-get install -y apt-utils git python3-pip > /dev/null \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV NB_USER=jovyan
 RUN echo "creating ${NB_USER} user..." \
