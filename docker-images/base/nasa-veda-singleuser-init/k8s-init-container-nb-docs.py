@@ -17,7 +17,7 @@ def clone_veda_docs(target_home_path):
         print(f"command stderr:\n{result.stderr}")
 
         result = subprocess.run(
-            ["chown", "-R", "jovyan:jovyan", target_path],
+            ["chown", "-R", "1000:1000", target_path],
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
