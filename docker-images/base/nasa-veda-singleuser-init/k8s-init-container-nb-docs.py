@@ -13,8 +13,18 @@ def clone_veda_docs(target_home_path):
             stderr=subprocess.PIPE,
             text=True  # Capture output as a string instead of bytes
         )
-        print(f"Command stdout:\n{result.stdout}")
-        print(f"Command stderr:\n{result.stderr}")
+        print(f"command stdout:\n{result.stdout}")
+        print(f"command stderr:\n{result.stderr}")
+
+        result = subprocess.run(
+            ["chown", "-R", "jovyan:jovyan", target_path],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True  # Capture output as a string instead of bytes
+        )
+        print(f"chown stdout:\n{result.stdout}")
+        print(f"chown stderr:\n{result.stderr}")
     except subprocess.CalledProcessError as e:
         print(f"Command failed with error {e.returncode}, stderr:\n{e.stderr}")
         raise
