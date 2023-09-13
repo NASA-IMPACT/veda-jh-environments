@@ -16,8 +16,7 @@ RUN echo "creating ${NB_USER} user..." \
     # Create non-root user, with given gid, uid and create $HOME
     && useradd --create-home --gid 1000 --no-log-init --uid 1000 ${NB_USER}
 
-
-RUN echo "force"
+RUN echo "force new checksum"
 RUN pip3 install nbgitpuller
 
 USER jovyan
