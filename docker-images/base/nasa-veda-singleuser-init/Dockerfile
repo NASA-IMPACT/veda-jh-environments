@@ -1,5 +1,5 @@
 FROM ubuntu:22.04
-ENV VERSION=0.0.1
+ENV VERSION=0.0.2
 
 LABEL org.opencontainers.image.source=https://github.com/NASA-IMPACT/veda-jh-environments/tree/main/docker-images
 
@@ -17,7 +17,7 @@ RUN echo "creating ${NB_USER} user..." \
     # Create non-root user, with given gid, uid and create $HOME
     && useradd --create-home --gid 1000 --no-log-init --uid 1000 ${NB_USER}
 
-RUN echo "VERSION"
+RUN echo "VERSION=0.0.2"
 RUN pip3 install nbgitpuller
 
 USER jovyan
