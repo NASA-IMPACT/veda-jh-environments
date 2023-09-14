@@ -1,37 +1,56 @@
 import subprocess
 import argparse
 import os
+import sys
+import logging
+
+logger = logging.getLogger("k8s-init-veda-docs")
+logging.basicConfig(
+    filename='/home/jovyan/k8s-init-veda-doc-examples.log',
+    level=logging.DEBUG,
+    format='%(asctime)s [%(levelname)s] - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
 
 
 def clone_veda_docs(target_home_path):
     try:
         target_path = os.path.join(target_home_path, "veda-docs-examples")
+        cmd = ["gitpuller", "https://github.com/NASA-IMPACT/veda-docs/", "main", target_path]
+        logger.debug(f"[ EXECUTING ]: {cmd}")
         result = subprocess.run(
-            ["gitpuller", "https://github.com/NASA-IMPACT/veda-docs/", "main", target_path],
+            cmd,
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True  # Capture output as a string instead of bytes
         )
-        print(f"command stdout:\n{result.stdout}")
-        print(f"command stderr:\n{result.stderr}")
+        logger.debug(f"gitpuller stdout:\n{result.stdout}")
+        logger.error(f"gitpuller stderr:\n{result.stderr}")
 
+        cmd = ["chown", "-R", "1000:1000", target_path],
+        logger.debug(f"[ EXECUTING ]: {cmd}")
         result = subprocess.run(
-            ["chown", "-R", "1000:1000", target_path],
+            cmd,
             check=True,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True  # Capture output as a string instead of bytes
+            text=True
         )
-        print(f"chown stdout:\n{result.stdout}")
-        print(f"chown stderr:\n{result.stderr}")
+        logger.debug(f"chown stdout:\n{result.stdout}")
+        logger.error(f"chown stderr:\n{result.stderr}")
     except subprocess.CalledProcessError as e:
-        print(f"Command failed with error {e.returncode}, stderr:\n{e.stderr}")
-        raise
+        logger.error(f"Command failed with error {e.returncode}, stderr:\n{e.stderr}")
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument("target", help="The target home path which should exist.")
-    args = parser.parse_args()
-    clone_veda_docs(args.target)
+    try:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("target", help="The target home path which should exist.")
+        args = parser.parse_args()
+        clone_veda_docs(args.target)
+    except Exception as e:
+        logger.error(f"Command failed with error {e.returncode}, stderr:\n{e.stderr}")
+    finally:
+        # force the initContainer never to fail so users still progress to the next image
+        sys.exit(0)
