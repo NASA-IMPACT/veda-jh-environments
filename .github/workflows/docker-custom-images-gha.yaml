@@ -87,7 +87,7 @@ jobs:
         run: |
           echo "#########################################################################"
           echo "YOUR NEW CUSTOM IMAGE URL + SHATAG IS:"
-          echo "${digesttag}"
+          echo "${{ steps.tags.outputs.digesttag }}"
           echo "#########################################################################"
 
       - name: check for changes
