@@ -86,7 +86,7 @@ jobs:
       - name: echo out ECR image URL and SHA tag
         run: |
           echo "#########################################################################"
-          echo "YOUR NEW CUSTOM IMAGE URL + SHATAG IS:
+          echo "YOUR NEW CUSTOM IMAGE URL + SHATAG IS:"
           echo "${digesttag}"
           echo "#########################################################################"
 
