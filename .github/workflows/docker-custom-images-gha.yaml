@@ -68,7 +68,11 @@ jobs:
           datetag=${{ env.REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}:$DATESTR
           echo "datetag=${datetag}" >>$GITHUB_OUTPUT
 
-          ENVIRON_DIGEST=$(sha256sum ./docker-images/custom/${{ matrix.IMAGE }}/environment.yml | cut -d' ' -f1)
+          if [ -f ./docker-images/custom/${{ matrix.IMAGE }}/environment.yml ]; then
+            ENVIRON_DIGEST=$(sha256sum ./docker-images/custom/${{ matrix.IMAGE }}/environment.yml | cut -d' ' -f1)
+          elif [ -f ./docker-images/custom/${{ matrix.IMAGE }}/standalone-environment.yml ]; then
+            ENVIRON_DIGEST=$(sha256sum ./docker-images/custom/${{ matrix.IMAGE }}/standalone-environment.yml | cut -d' ' -f1)
+          fi
           digesttag=${{ env.REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}:$ENVIRON_DIGEST
           echo "digesttag=${digesttag}" >>$GITHUB_OUTPUT
 
@@ -78,6 +82,13 @@ jobs:
 
           latesttag=${{ env.REGISTRY_BASE_URL }}/${{ matrix.IMAGE }}:latest
           echo "latesttag=${latesttag}" >>$GITHUB_OUTPUT
+
+      - name: echo out ECR image URL and SHA tag
+        run: |
+          echo "#########################################################################"
+          echo "YOUR NEW CUSTOM IMAGE URL + SHATAG IS:
+          echo "${digesttag}"
+          echo "#########################################################################"
 
       - name: check for changes
         id: changes
