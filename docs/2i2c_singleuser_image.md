@@ -89,7 +89,7 @@ $ AWS_PROFILE=uah aws ecr-public describe-image-tags \
 }
 ```
 
-Note the full image name will be `public.ecr.aws/nasa-veda/nasa-veda-singleuser:\<imageTag\>`.
+Note the full image URI will be `public.ecr.aws/nasa-veda/nasa-veda-singleuser:<imageTag>`.
 
 ## Put in a PR against 2i2c's Infrastructure Repo
 
