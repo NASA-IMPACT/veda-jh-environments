@@ -1,4 +1,4 @@
-# Adding Custom Images for JupyterHub (JH) Profile
+# Adding and Using Custom Images for JupyterHub (JH) Profile
 
 ### Intro
 

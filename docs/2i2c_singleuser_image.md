@@ -89,6 +89,8 @@ $ AWS_PROFILE=uah aws ecr-public describe-image-tags \
 }
 ```
 
+Note the full image URI will be `public.ecr.aws/nasa-veda/nasa-veda-singleuser:<imageTag>`.
+
 ## Put in a PR against 2i2c's Infrastructure Repo
 
 1. If you haven't already [clone DS's fork](https://github.com/developmentseed/infrastructure/) of [2i2c's insfrastructure repo](https://github.com/2i2c-org/infrastructure)
@@ -100,5 +102,5 @@ located at `profile_options.image.options.pangeo.kubespawner_override.image`. Pr
 custom image by referring to it. Then to doubley make sure things work we can explicitly as in PR for 2i2c to update https://staging.nasa-veda.2i2c.cloud/ first 
 so we can play with it and then if all looks good we can alert them to promote it to https://nasa-veda.2i2c.cloud/
 
-4. After the PR is in we drink some coffee and wait for 2i2c to do the work
+4. After the PR is in we drink some coffee and wait for 2i2c to do the work.
 
