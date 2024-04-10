@@ -1,8 +1,0 @@
-# NOTE: to use this file
-# $ cp .envtf.template .envtf.sh
-# $ source .envtf.sh
-export TF_VAR_smce_aws_access_key=''
-export TF_VAR_smce_aws_secret_key=''
-export TF_VAR_smce_aws_account_id=''
-export TF_VAR_smce_aws_session_token=''
-

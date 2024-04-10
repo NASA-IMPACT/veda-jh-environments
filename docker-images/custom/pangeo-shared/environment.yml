@@ -1,6 +1,0 @@
-name: pangeo-shared
-# just an empty environment.yml to generate a sha from for CI
-channels:
-  - conda-forge
-  - defaults
-dependencies: []
